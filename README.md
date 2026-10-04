@@ -118,9 +118,9 @@ Windows Security Event ID `4720` independently confirmed creation of `SOC-TestUs
 
 | Technique | Name | Tactic |
 |---|---|---|
-| T1059.001 | PowerShell | Execution |
-| T1105 | Ingress Tool Transfer | Command and Control |
-| T1136.001 | Create Account: Local Account | Persistence |
+| [T1059.001](https://attack.mitre.org/techniques/T1059/001/) | PowerShell | Execution |
+| [T1105](https://attack.mitre.org/techniques/T1105/) | Ingress Tool Transfer | Command and Control |
+| [T1136.001](https://attack.mitre.org/techniques/T1136/001/) | Create Account: Local Account | Persistence |
 
 Only techniques directly supported by the collected evidence were mapped.
 
