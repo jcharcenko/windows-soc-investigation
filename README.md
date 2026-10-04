@@ -36,6 +36,9 @@ The activity was reconstructed using **Sysmon process, network and file telemetr
 
 ## Investigation Timeline
 
+**Incident date:** 4 October 2026  
+**Timezone:** Europe/Dublin
+
 [![Reconstructed incident timeline](screenshots/13-incident-timeline.png)](screenshots/13-incident-timeline.png)
 
 | Time | Event | Activity |
