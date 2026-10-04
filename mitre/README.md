@@ -8,9 +8,9 @@ Only techniques directly supported by the available telemetry were included.
 
 | Technique | Name | Tactic | Supporting Evidence |
 |---|---|---|---|
-| T1059.001 | PowerShell | Execution | PowerShell executed an encoded command and subsequently launched a staged `.ps1` file using `ExecutionPolicy Bypass`. |
-| T1105 | Ingress Tool Transfer | Command and Control | PowerShell established a network connection to controlled test infrastructure and transferred a `.ps1` file to the Windows endpoint. |
-| T1136.001 | Create Account: Local Account | Persistence | `net.exe` and `net1.exe` were used to create `SOC-TestUser`, confirmed by Windows Security Event ID 4720. |
+| [T1059.001](https://attack.mitre.org/techniques/T1059/001/) | PowerShell | Execution | PowerShell executed an encoded command and subsequently launched a staged `.ps1` file using `ExecutionPolicy Bypass`. |
+| [T1105](https://attack.mitre.org/techniques/T1105/) | Ingress Tool Transfer | Command and Control | PowerShell established a network connection to controlled test infrastructure and transferred a `.ps1` file to the Windows endpoint. |
+| [T1136.001](https://attack.mitre.org/techniques/T1136/001/) | Create Account: Local Account | Persistence | `net.exe` and `net1.exe` were used to create `SOC-TestUser`, confirmed by Windows Security Event ID 4720. |
 
 ## T1059.001 — PowerShell
 
