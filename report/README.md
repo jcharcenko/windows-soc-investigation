@@ -100,6 +100,9 @@ Windows Security Event ID `4720` independently confirmed successful account crea
 
 ## Timeline
 
+**Incident date:** 4 October 2026  
+**Timezone:** Europe/Dublin
+
 | Time | Event | Finding |
 |---|---:|---|
 | 21:51:26 | Sysmon 1 | Encoded PowerShell executed |
