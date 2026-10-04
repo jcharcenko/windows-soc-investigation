@@ -1,0 +1,40 @@
+/*
+SOC-INV-2026-001
+Incident timeline reconstruction
+
+Correlates Sysmon and Windows Security telemetry to reconstruct
+the key activity identified during the investigation.
+*/
+
+index=main host="WIN11-DFIR"
+earliest="10/04/2026:21:51:00" latest="10/04/2026:21:54:00"
+(
+    sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+    OR sourcetype="XmlWinEventLog:Security"
+)
+| rex field=_raw "<EventID>(?<EventID>\d+)</EventID>"
+| rex field=_raw "<Data Name='Image'>(?<Image>[^<]+)"
+| rex field=_raw "<Data Name='CommandLine'>(?<CommandLine>[^<]+)"
+| rex field=_raw "<Data Name='TargetFilename'>(?<TargetFilename>[^<]+)"
+| rex field=_raw "<Data Name='DestinationIp'>(?<DestinationIp>[^<]+)"
+| rex field=_raw "<Data Name='DestinationPort'>(?<DestinationPort>[^<]+)"
+| rex field=_raw "<Data Name='ProcessId'>(?<ProcessId>[^<]+)"
+| eval Activity=case(
+    EventID="1" AND match(CommandLine,"(?i)-enc(odedcommand)?"),"Encoded PowerShell execution",
+    EventID="11" AND like(TargetFilename,"%SOC-INV-2026-001.ps1"),"Staged PowerShell artifact created",
+    EventID="3" AND DestinationIp="192.168.134.128" AND DestinationPort="8080","Outbound connection to test infrastructure",
+    EventID="1" AND like(CommandLine,"%SOC-INV-2026-001.ps1%"),"Staged PowerShell script executed",
+    EventID="1" AND match(Image,"(?i)\\\\net\\.exe$") AND like(CommandLine,"%SOC-TestUser%"),"Local account creation command",
+    EventID="1" AND match(Image,"(?i)\\\\net1\\.exe$") AND like(CommandLine,"%SOC-TestUser%"),"Account creation child process",
+    EventID="4720" AND like(_raw,"%SOC-TestUser%"),"Local user account created"
+)
+| where isnotnull(Activity)
+| eval CommandLine=replace(CommandLine,"LabOnly-2026!","[REDACTED]")
+| eval Evidence=case(
+    EventID="3",DestinationIp.":".DestinationPort,
+    EventID="11",TargetFilename,
+    EventID="4720","SOC-TestUser",
+    true(),CommandLine
+)
+| table _time EventID Activity Image ProcessId Evidence
+| sort _time
