@@ -29,7 +29,7 @@ earliest="10/04/2026:21:51:00" latest="10/04/2026:21:54:00"
     EventID="4720" AND like(_raw,"%SOC-TestUser%"),"Local user account created"
 )
 | where isnotnull(Activity)
-| eval CommandLine=replace(CommandLine,"LabOnly-2026!","[REDACTED]")
+| eval CommandLine=replace(CommandLine,"SOC-TestUser [^ ]+ /add","SOC-TestUser [REDACTED] /add")
 | eval Evidence=case(
     EventID="3",DestinationIp.":".DestinationPort,
     EventID="11",TargetFilename,
